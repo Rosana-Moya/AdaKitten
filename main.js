@@ -1,55 +1,17 @@
 "use strict"
 
-console.log("Go");
-
-
-
-// const kittenList = document.querySelector(".js-list");
-
-// /* Agregar el código del li desde HTMl 
-// Repetir este proceso por cada gatito */
-// const kittenOne = `<li class="card">
-// <article>
-//   <img
-//     class="card_img"
-//     src="https://dev.adalab.es/gato-siames.webp"
-//     alt="gatito"
-//   />
-//   <h3 class="card_title">Anastacio</h3>
-//   <h4 class="card_race">Siamés</h4>
-//   <p class="card_description">
-//             Porte elegante, su patrón de color tan característico y sus ojos
-//             de un azul intenso, pero su historia se remonta a Asía al menos
-//             hace 500 años, donde tuvo su origen muy posiblemente.
-//    </p>
-// </article>
-// </li>`;
-
-// kittenList.innerHTML = kittenOne;
-
-// console.log(kittenOne);
-
  // Elementos
 const kittenList = document.querySelector(".js-list");
 const inputDesc = document.querySelector(".input-description");
 const inputRace = document.querySelector(".input-race");
-const btnSearch = document.querySelector(".button");
+const searchBtn = document.querySelector(".button");
 const toggleFormBtn = document.querySelector(".btn-add");
+const formSection = document.querySelector(".form_section");
+const addKittenBtn = formSection.querySelector(".js-add-btn");
 
-// Crear y mostrar formulario
-const formSection = document.createElement("section");
-formSection.classList.add("form-section", "hidden");
-formSection.innerHTML = `
-  <input type="text" class="js-name" placeholder="Nombre" />
-  <input type="text" class="js-race" placeholder="Raza" />
-  <input type="text" class="js-desc" placeholder="Descripción" />
-  <input type="url" class="js-img" placeholder="URL de la imagen" />
-  <button class="js-add-btn">Añadir</button>
-`;
-document.querySelector("main").prepend(formSection);
 
 // Datos iniciales
-let kittens = JSON.parse(localStorage.getItem("kittens")) || [
+let kittens = JSON.parse(localStorage.getItem("kittens")) || [ // Si localstorage existe, lo usa, si no usa el array || (OR) ahorra usar un IF
   {
     name: "Anastacio",
     race: "Siamés",
@@ -60,34 +22,31 @@ let kittens = JSON.parse(localStorage.getItem("kittens")) || [
     name: "Fiona",
     race: "British Shorthair",
     desc: "Muy tranquila y adorable.",
-    image: "https://dev.adalab.es/gato-british.webp",
+    image: "https://dev.adalab.es/gato-british.webp",  //Buscar imagen yo
   },
   {
     name: "Cielo",
     race: "Maine Coon",
     desc: "Grande y suave, como una nube.",
-    image: "https://dev.adalab.es/gato-mainecoon.webp",
+    image: "https://dev.adalab.es/gato-mainecoon.webp",  //Buscar imagen yo
   },
 ];
 
 // Renderizar gatos
 function renderKittens(data) {
-  kittenList.innerHTML = data
-    .map(
-      (kitten) => `
-    <li class="card">
-      <article>
-        <img class="card_img" src="kitten.image" alt="{kitten.name}" />
-        <h3 class="card_title">kitten.name</h3>
-        <h4 class="card_race">{kitten.race}</h4>
-        <p class="card_description">kitten.desc</p>
-      </article>
-    </li>`
-       )
-    .join("");
-}
+  kittenList.innerHTML = ""; // Limpiar antes de renderizar
 
-renderKittens(kittens);
+  data.forEach((kitten) => {
+    kittenList.innerHTML = kittenList.innerHTML + `
+      <li class="card">
+        <article>
+          <img class="card_img" src="${kitten.image}" alt="${kitten.race}" />
+          <h3 class="card_title">${kitten.race}</h3>
+          <p class="card_description">${kitten.desc}</p>
+        </article>
+      </li>`;
+  });
+}
 
 // Buscar
 function handleSearch() {
@@ -103,26 +62,33 @@ function handleSearch() {
   renderKittens(filtered);
 }
 
-btnSearch.addEventListener("click", handleSearch);
+searchBtn.addEventListener("click", handleSearch);
 
 // Mostrar formulario
 toggleFormBtn.addEventListener("click", () => {
   formSection.classList.toggle("hidden");
+  console.log(formSection.classList)
 });
 
 // Añadir nuevo gatito
-formSection.querySelector(".js-add-btn").addEventListener("click", () => {
-  const name = formSection.querySelector(".js-name").value.trim();
+addKittenBtn.addEventListener("click", () => {
+  const name = formSection.querySelector(".js-name").value.trim(); // trim quita espacios en blanco antes y despues del value
   const race = formSection.querySelector(".js-race").value.trim();
   const desc = formSection.querySelector(".js-desc").value.trim();
   const image = formSection.querySelector(".js-img").value.trim();
 
   if (name && race && desc && image) {
-    const newKitten = { name, race, desc, image };
-    kittens.push(newKitten);
-    localStorage.setItem("kittens", JSON.stringify(kittens));
-    renderKittens(kittens);
-    formSection.classList.add("hidden");
-    formSection.querySelectorAll("input").forEach((i) => (i.value = ""));
+    const newKitten = { name, race, desc, image }; // crea un newKitten con los 4 valores
+    kittens.push(newKitten); // añade el newKitten al final del array
+    localStorage.setItem("kittens", JSON.stringify(kittens));  // se añade la lista de kittens al localStorage
+    renderKittens(kittens); // renderiza los gatos con la lista actualizada
+    formSection.classList.add("hidden"); // oculta el formulario (añadiendo la clase hidden)
+    formSection.querySelectorAll("input").forEach((i) => (i.value = ""));  // pone en blanco cada input del formulario
   }
 });
+
+
+renderKittens(kittens); // llama a la función renderKittens sobre la lista kittens
+
+const last = kittens.length -1; // calculo la ultima posicion del array
+console.log(kittens[last]); // imprimo por consola el ultimo gato

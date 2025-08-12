@@ -23,20 +23,24 @@
    </header>
 
     <main class="main">
-         <div class="new-form">
-            <p class="new-form-p">Filtrar/Buscar</p>
-            <input class="input-description" type="text" placeholder="Descripción">
-            <input class="input-race" type="text" placeholder="Raza">
-            <button class="button">Buscar</button>
-         </div>
-
          <div class="about-us">
 
          </div>
 
          <div class="search">
-
+            <p>Filtrar/Buscar</p>
+            <input class="input-description" type="text" placeholder="Descripción">
+            <input class="input-race" type="text" placeholder="Raza">
+            <button class="button">Buscar</button>
          </div>
+
+         <form class="form_section hidden">
+            <input type="text" class="js-name" placeholder="Nombre" />
+            <input type="text" class="js-race" placeholder="Raza" />
+            <input type="text" class="js-desc" placeholder="Descripción" />
+            <input type="url" class="js-img" placeholder="URL de la imagen" />
+            <button class="js-add-btn">Añadir</button>
+         </form>
 
          <div class="data">
             <ul class="js-list"></ul>
@@ -45,7 +49,7 @@
     </main>
 
     <footer class="footer">
-         <p class="footerP">&copy; Adalab Rosana 2025</p>
+         <p>&copy; Adalab Rosana 2025</p>
     </footer>
 
     <script src="main.js"></script>
